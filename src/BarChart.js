@@ -72,7 +72,7 @@ class BarChart extends React.Component {
     sortAxis = (i, descending) => {
       if(descending === undefined) descending = true;
       // Build a new array to sort e.x. { name: 'some name', val: 1 }
-      let toSort = Object.keys(data).map(name => {
+      let toSort = Object.keys(this.props.data).map(name => {
         return {
           name,
           val: this.props.data[name][i]
