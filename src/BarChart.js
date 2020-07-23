@@ -63,37 +63,21 @@ class BarChart extends React.Component {
         });
     }
 
-    /**
-    * sortAxis
-    * Handles sorting the results
-    * @param {*} i is the item to start sorting from
-    * @param {*} descending is the direction to sort
-    */
     sortAxis = (i, descending) => {
       if(descending === undefined) descending = true;
-      // Build a new array to sort e.x. { name: 'some name', val: 1 }
       let toSort = Object.keys(this.props.data).map(name => {
         return {
-          name,
+          name: name, 
           val: this.props.data[name][i]
         };
       });
-      // Handle the sorting based on the values
-      toSort.sort((left, right) => left.val - right.val)
-      if (descending) {
-        toSort.reverse()
-      }
-      // Slice based on the maximum items allowed
-      const fItems = Object.keys(this.props.data).length
-      if (this.maxItems && this.maxItems <= fItems) {
-        toSort = toSort.slice(0, this.maxItems)
-      }
-      const maxVal = Math.max.apply(Math, toSort.map(item => item.val))
-      const minVal = Math.min.apply(Math, toSort.map(item => item.val))
-      // Sorted list of results based on the axis
+      toSort.sort((left, right) => descending ? left.val < right.val : left.val > right.val);
+      toSort = toSort.slice(0, this.maxItems);
+      const maxVal = Math.max.apply(Math, toSort.map(item => item.val));
+      const minVal = Math.min.apply(Math, toSort.map(item => item.val));
       return [toSort.reduce((ret, item, idx) => ({
         ...ret, ...{ [item.name]: idx }
-      }), {}), minVal, maxVal]
+      }), {}), maxVal, minVal] 
     }
 
     getInfoFromRank = name => {
